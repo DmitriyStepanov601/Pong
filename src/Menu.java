@@ -5,6 +5,7 @@ import java.io.IOException;
 
 /**
  * A class that describes the game menu
+ *
  * @author Dmitriy Stepanov
  */
 public class Menu {
@@ -13,7 +14,7 @@ public class Menu {
     private final int WINDOW_WIDTH;
     private final int WINDOW_HEIGHT;
     private final int selectionRegionSizeK = 6;
-    public  final int MAX_ANIMATION_ALPHA = 125;
+    public final int MAX_ANIMATION_ALPHA = 125;
     private Image icon;
     private Image logo;
     public byte ID_start;
@@ -41,6 +42,7 @@ public class Menu {
 
     /**
      * Constructor - creating a new menu
+     *
      * @param gameField - playing field
      * @see Menu#Menu(GameField)
      */
@@ -67,7 +69,7 @@ public class Menu {
         ID_esctopause = textureLoader.getID("esctopause");
     }
 
-    public static BufferedImage loadImage(String path){
+    public static BufferedImage loadImage(String path) {
         try {
             return ImageIO.read(Menu.class.getResource(path));
         } catch (IOException e) {
@@ -76,38 +78,38 @@ public class Menu {
         }
         return null;
     }
-       
+
     public void menuProcess() {
         selectionMin = 0;
-        if(isMainMenuState) {
-           selectionsCount = 3;
+        if (isMainMenuState) {
+            selectionsCount = 3;
         }
 
-        if(subState == 2) {
+        if (subState == 2) {
             selection = 3;
             selectionMin = 2;
         }
 
-        if(this.selection < 0) selection = 0;
-        if(this.selection > (byte)(selectionsCount - 1)) selection = (byte)(selectionsCount - 1);
+        if (this.selection < 0) selection = 0;
+        if (this.selection > (byte) (selectionsCount - 1)) selection = (byte) (selectionsCount - 1);
 
-        switch(selection) {
-            case(0) :
+        switch (selection) {
+            case (0):
                 selectorY = WINDOW_HEIGHT / selectionRegionSizeK * (1 + (selectionRegionSizeK / 3)) - 6;
                 break;
-            case(1) :
+            case (1):
                 selectorY = WINDOW_HEIGHT / selectionRegionSizeK * (2 + (selectionRegionSizeK / 3)) - 6;
                 break;
-            case(2) :
+            case (2):
                 selectorY = WINDOW_HEIGHT / selectionRegionSizeK * (3 + (selectionRegionSizeK / 3)) - 6;
                 break;
         }
 
         animationMoment += 0.088d;
-        if(animationMoment > 310000000000d) animationMoment = 0;
-        this.selectionTransparency = Math.abs((int)(Math.sin(animationMoment) * MAX_ANIMATION_ALPHA));
+        if (animationMoment > 310000000000d) animationMoment = 0;
+        this.selectionTransparency = Math.abs((int) (Math.sin(animationMoment) * MAX_ANIMATION_ALPHA));
     }
-   
+
     public void drawMenu() {
         icon = loadImage("/icon.png");
         m.g.drawImage(icon, 40, 40, 200, 200, null);
@@ -116,7 +118,7 @@ public class Menu {
         Texture tex;
         int position;
 
-        if(isMainMenuState) {
+        if (isMainMenuState) {
             position = 1;
 
             tex = textureLoader.texList.get(ID_start);
@@ -144,7 +146,7 @@ public class Menu {
                     WINDOW_HEIGHT / selectionRegionSizeK * (position + (selectionRegionSizeK / 3)) +
                             tex.getHeight(), tex.getSX1(), tex.getSY1(), tex.getSX2(), tex.getSY2(), m);
         }
-        if(subState == 2) {
+        if (subState == 2) {
             position = 1;
 
             tex = textureLoader.texList.get(ID_controls);
@@ -200,7 +202,8 @@ public class Menu {
 
             tex = textureLoader.texList.get(ID_esctopause);
             m.g.drawImage(textureLoader.texMenu, 8, WINDOW_HEIGHT - tex.getHeight() * 2 - 16,
-                    8 + tex.getWidth(), WINDOW_HEIGHT - tex.getHeight() - 16, tex.getSX1(), tex.getSY1(),
+                    8 + tex.getWidth(), WINDOW_HEIGHT - tex.getHeight() - 16, tex.getSX1(),
+                    tex.getSY1(),
                     tex.getSX2(), tex.getSY2(), m);
 
             position = 3;
@@ -212,7 +215,7 @@ public class Menu {
                     WINDOW_HEIGHT / selectionRegionSizeK * (position + (selectionRegionSizeK / 3)) +
                             tex.getHeight(), tex.getSX1(), tex.getSY1(), tex.getSX2(), tex.getSY2(), m);
         }
-        if(subState == 1) {
+        if (subState == 1) {
             position = 1;
 
             tex = textureLoader.texList.get(ID_singleplayer);
@@ -243,35 +246,35 @@ public class Menu {
         m.g.setColor(new Color(220, 0, 0, selectionTransparency));
         m.g.fillRect(0, selectorY, 1280, 44);
     }
-    
+
     public void enter() {
-        if(isMainMenuState) {
-            if(selection == 0) {
+        if (isMainMenuState) {
+            if (selection == 0) {
                 subState = 1;
                 isMainMenuState = false;
-            } else if(selection == 1) {
+            } else if (selection == 1) {
                 subState = 2;
                 isMainMenuState = false;
-            } else if(selection == 2) {
+            } else if (selection == 2) {
                 System.exit(0);
             }
         } else {
-            if(subState == 2) {
+            if (subState == 2) {
                 subState = 0;
                 isMainMenuState = true;
                 selection = 1;
             }
 
-            if(subState == 1) {
-                if(selection == 2) {
+            if (subState == 1) {
+                if (selection == 2) {
                     subState = 0;
                     isMainMenuState = true;
                     selection = 0;
-                } else if(selection == 0) {
+                } else if (selection == 0) {
                     m.game.multiplayer = false;
                     m.gameState = 1;
                     m.game.startGame();
-                } else if(selection == 1) {
+                } else if (selection == 1) {
                     m.game.multiplayer = true;
                     m.gameState = 1;
                     m.game.startGame();
@@ -279,21 +282,24 @@ public class Menu {
             }
         }
     }
-    
+
     public void setMainMenu() {
         subState = 0;
         isMainMenuState = true;
     }
-    
+
     public boolean isMainMenuState() {
         return this.isMainMenuState;
     }
+
     public void setMainMenuState(boolean isMainMenuState) {
         this.isMainMenuState = isMainMenuState;
     }
+
     public void selectionUp() {
         this.selection--;
     }
+
     public void selectionDown() {
         this.selection++;
     }

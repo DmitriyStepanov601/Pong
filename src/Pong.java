@@ -5,6 +5,7 @@ import java.io.IOException;
 
 /**
  * A class that describes the game's graphical interface
+ *
  * @author Dmitriy Stepanov
  */
 public class Pong extends JFrame {
@@ -14,6 +15,7 @@ public class Pong extends JFrame {
 
     /**
      * Constructor - creating a new graphical interface
+     *
      * @see Pong#Pong()
      */
     public Pong() {
@@ -36,5 +38,7 @@ public class Pong extends JFrame {
         setVisible(true);
     }
 
-    public static void main(String[] args) { new Pong(); }
+    public static void main(String[] args) {
+        new Pong();
+    }
 }

@@ -1,5 +1,6 @@
 /**
  * A class that describes how the AI works in the game
+ *
  * @author Dmitriy Stepanov
  */
 public class AI {
@@ -11,66 +12,68 @@ public class AI {
     private double hackerDifficulty = 0.6;
     private boolean hackerIsEnabled = false;
     private String difficultyName = "easy";
-    
+
     public void updatePositionAI(Player player, Ball ball) {
         this.controllingPlayer = player;
         this.ball = ball;
         controllingPlayer.setY(controllingPlayer.getY() + dy);
 
-        if(player.getY() < 16) {
+        if (player.getY() < 16) {
             player.setY(16);
             dy = 0;
         }
 
-        if(player.getY() > GameField.HEIGHT - Player.HEIGHT - 16) {
+        if (player.getY() > GameField.HEIGHT - Player.HEIGHT - 16) {
             player.setY(GameField.HEIGHT - Player.HEIGHT - 16);
             dy = 0;
         }
     }
 
     public void updateSpeed() {
-        if(controllingPlayer.getY() + Player.HEIGHT / 2 > ball.getY()) {
+        if (controllingPlayer.getY() + Player.HEIGHT / 2 > ball.getY()) {
             dy -= difficulty_dy * Math.sqrt(Math.abs(controllingPlayer.getY() - ball.getY()) / 2);
-        } else if(controllingPlayer.getY() + Player.HEIGHT / 2 < ball.getY()) {
+        } else if (controllingPlayer.getY() + Player.HEIGHT / 2 < ball.getY()) {
             dy += difficulty_dy * Math.sqrt(Math.abs(controllingPlayer.getY() - ball.getY()) / 2);
         }
 
         if (dy > Player.MOVESPEED * 0.3 * difficulty) {
-            dy-= 0.3 * Math.sqrt(Math.abs(controllingPlayer.getY() - ball.getY()) / 2);
-        } else if(dy < -(Player.MOVESPEED * 0.3 * difficulty)) {
-            dy+= 0.3 * Math.sqrt(Math.abs(controllingPlayer.getY() - ball.getY()) / 2);
+            dy -= 0.3 * Math.sqrt(Math.abs(controllingPlayer.getY() - ball.getY()) / 2);
+        } else if (dy < -(Player.MOVESPEED * 0.3 * difficulty)) {
+            dy += 0.3 * Math.sqrt(Math.abs(controllingPlayer.getY() - ball.getY()) / 2);
         }
-        
-        if(hackerIsEnabled) {
-            if(ball.getXSpeed() > 0) {
+
+        if (hackerIsEnabled) {
+            if (ball.getXSpeed() > 0) {
                 double distanceToBall = controllingPlayer.getX() - ball.getX();
                 double ball_y0 = (distanceToBall / ball.getXSpeed()) * ball.getYSpeed() + ball.getY();
 
-                if(ball_y0 < 0) {
+                if (ball_y0 < 0) {
                     ball_y0 = Math.abs(ball_y0);
                 }
 
-                if(ball_y0 > GameField.HEIGHT) {
+                if (ball_y0 > GameField.HEIGHT) {
                     ball_y0 = Math.abs(GameField.HEIGHT - (ball_y0 - GameField.HEIGHT));
                 }
 
-                if(controllingPlayer.getY() < ball_y0 - Player.HEIGHT / 2) {
-                    dy += 0.34d * Math.sqrt(Math.abs(controllingPlayer.getY() - ball_y0) / 2) * hackerDifficulty;
-                } else if(controllingPlayer.getY() > ball_y0 - Player.HEIGHT / 2) {
-                    dy -= 0.34d * Math.sqrt(Math.abs(controllingPlayer.getY() - ball_y0) / 2) * hackerDifficulty;
+                if (controllingPlayer.getY() < ball_y0 - Player.HEIGHT / 2) {
+                    dy += 0.34d * Math.sqrt(Math.abs(controllingPlayer.getY() - ball_y0) / 2)
+                            * hackerDifficulty;
+                } else if (controllingPlayer.getY() > ball_y0 - Player.HEIGHT / 2) {
+                    dy -= 0.34d * Math.sqrt(Math.abs(controllingPlayer.getY() - ball_y0) / 2)
+                            * hackerDifficulty;
                 }
             } else {
-                if(controllingPlayer.getY() < (GameField.HEIGHT - Player.HEIGHT) / 2) {
-                    dy += 0.34d * Math.sqrt(Math.abs(controllingPlayer.getY() - (GameField.HEIGHT - Player.HEIGHT) / 2)
-                            / 2) * hackerDifficulty;
-                } else if(controllingPlayer.getY() > (GameField.HEIGHT - Player.HEIGHT)) {
-                    dy -= 0.34d * Math.sqrt(Math.abs(controllingPlayer.getY() - (GameField.HEIGHT - Player.HEIGHT) / 2)
-                            / 2) * hackerDifficulty;
+                if (controllingPlayer.getY() < (GameField.HEIGHT - Player.HEIGHT) / 2) {
+                    dy += 0.34d * Math.sqrt(Math.abs(controllingPlayer.getY() -
+                            (GameField.HEIGHT - Player.HEIGHT) / 2) / 2) * hackerDifficulty;
+                } else if (controllingPlayer.getY() > (GameField.HEIGHT - Player.HEIGHT)) {
+                    dy -= 0.34d * Math.sqrt(Math.abs(controllingPlayer.getY() -
+                            (GameField.HEIGHT - Player.HEIGHT) / 2) / 2) * hackerDifficulty;
                 }
             }
         }
     }
-    
+
     public void setDifficulty(String easy_normal_hardcore_hacker) {
         this.difficultyName = easy_normal_hardcore_hacker;
         switch (difficultyName) {
@@ -98,7 +101,7 @@ public class AI {
                 break;
         }
     }
-    
+
     public String getDifficulty() {
         return this.difficultyName;
     }
