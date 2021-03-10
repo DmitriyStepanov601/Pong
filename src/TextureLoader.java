@@ -46,8 +46,9 @@ public class TextureLoader {
 
                 for(Texture tex : texList) {
                     tex.setSize();
-                    System.out.print("\n" + tex.getName() + ": " + tex.getSX1() + " " + tex.getSY1() + " " + tex.getSX2()
-                            + " " + tex.getSY2() + " | " + tex.getWidth() + " " + tex.getHeight());
+                    System.out.print("\n" + tex.getName() + ": " + tex.getSX1() + " " + tex.getSY1()
+                            + " " + tex.getSX2() + " " + tex.getSY2() + " | " + tex.getWidth()
+                            + " " + tex.getHeight());
                 }
                 System.out.println();
             }
